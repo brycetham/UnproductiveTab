@@ -1,10 +1,13 @@
 {
-    "name": "UnproductiveTab",
-    "description": "Optimized for maximum (un)productivity!",
-    "version": "0.0.1.0",
-	"manifest_version": 2,
-    "permissions" : ["management"],
-    "chrome_url_overrides" : {
-        "newtab": "newtab.html"
-    }
+   "name":"UnproductiveTab",
+   "description":"Optimized for maximum (un)productivity!",
+   "version":"0.0.1.0",
+   "manifest_version":2,
+   "permissions":[
+      "management",
+      "storage"
+   ],
+   "chrome_url_overrides":{
+      "newtab":"newtab.html"
+   }
 }
