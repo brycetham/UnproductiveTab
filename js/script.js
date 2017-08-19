@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	getGreeting();
-	loadData(getButtons);
+	getContent();
+	$("#save").click(saveSettings);
 });
 
 function getGreeting() {
@@ -29,24 +30,27 @@ function getGreeting() {
 					"AHHH your assignment is due at 11:59!"
 					]
 	}
-	$("#greeting").html("Good " + greeting + ", Bryce.");
+	$("#greeting").html("Good " + greeting + ", <span id=\"Name\">Bryce</span>.");
 	$("#aside").html(comments[Math.floor(Math.random() * comments.length)]);
 }
 
-function getButtons(json) {
-	var content = "";
-	$.each(json, function(category, values){
-		var buttons = "";
-		$.each(values["items"], function(index, item){
-			if (item["enabled"]) {
-				buttons += "<a href=\"" + item["url"] + "\" class=\"btn btn-outline-dark\"><i class=\"fa " + item["icon"] + "\" aria-hidden=\"true\"></i> " + item["name"] + "</a> ";
-			}
+function getContent() {
+	$.getJSON("data.json", function(json){
+		var pageContent = "";
+		var modalContent = "";
+		$.each(json, function(category, values){
+			var buttons = "";
+			var checkboxes = "";
+			$.each(values["items"], function(index, item){
+				buttons += "<a href=\"" + item["url"] + "\" class=\"btn btn-outline-dark\" id=\"button_" + item["name"] + "\"><i class=\"fa " + item["icon"] + "\" aria-hidden=\"true\"></i> " + item["name"] + "</a> ";
+				checkboxes += "<div class=\"form-check form-check-inline\"><label class=\"form-check-label\"><input class=\"form-check-input\" type=\"checkbox\" id=\"checkbox_" + item["name"] + "\" checked> " + item["name"] + "</label></div>";
+			});
+			pageContent += "<div class=\"row\" id=\"section_" + category + "\"><div class=\"col\"><h6>" + values["tagline"] + "</h6>" + buttons + "</div></div>";
+			modalContent += "<h6>" + category + "</h6><p><small>" + checkboxes + "</small></p>";
 		});
-		if (buttons != "") {
-			content += "<div class=\"row\"><div class=\"col\"><h6>" + values["tagline"] + "</h6>" + buttons + "</div></div>";
-		}
+		$("#pageContent").html(pageContent);
+		$("#modalContent").html(modalContent);
 	});
-	$("#content").html(content);
 }
 
 function saveData(data) {
@@ -60,10 +64,31 @@ function loadData(onSuccess) {
         if (Object.keys(data).length != 0) {
 			onSuccess(data)
 		} else {
-			console.log("Loading default data...");
 			$.getJSON("data.json", function(json){
 				onSuccess(json);
 			});
 		}
+	});
+}
+
+function saveSettings() {
+	$("#Name").html($("#input_Name")[0].value);
+	$.getJSON("data.json", function(json){
+		$.each(json, function(category, values){
+			var visibilityFlag = false;
+			$.each(values["items"], function(index, item){
+				if ($("#checkbox_" + item["name"])[0].checked) {
+					$("#button_" + item["name"]).css('display', 'inline-block');
+					visibilityFlag = true;
+				} else {
+					$("#button_" + item["name"]).css('display', 'none');
+				}
+			});
+			if (visibilityFlag) {
+				$("#section_" + category).css('display', 'block');
+			} else {
+				$("#section_" + category).css('display', 'none');
+			}
+		});
 	});
 }

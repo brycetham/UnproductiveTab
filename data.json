@@ -1,64 +1,51 @@
 {
-    "productivity":{
+    "Productivity":{
         "tagline":"Be unproductive:",
         "items":[
             {
                 "name":"Facebook",
                 "icon":"fa-facebook",
-                "url":"https://www.facebook.com/",
-				"enabled":true
-            },
-			{
-                "name":"Google+",
-                "icon":"fa-google-plus",
-                "url":"https://plus.google.com/",
-				"enabled":false
+                "url":"https://www.facebook.com/"
             },
             {
                 "name":"Instagram",
                 "icon":"fa-instagram",
-                "url":"https://www.instagram.com/",
-				"enabled":false
+                "url":"https://www.instagram.com/"
             },
             {
                 "name":"Reddit",
                 "icon":"fa-reddit",
-                "url":"https://www.reddit.com/",
-				"enabled":true
+                "url":"https://www.reddit.com/"
             },
             {
                 "name":"Twitter",
                 "icon":"fa-twitter",
-                "url":"https://www.twitter.com/",
-				"enabled":true
+                "url":"https://www.twitter.com/"
             }
         ]
     },
-	"shopping":{
+	"Shopping":{
         "tagline":"Buy needless things:",
         "items":[
             {
                 "name":"Amazon",
                 "icon":"fa-amazon",
-                "url":"https://www.amazon.com/",
-				"enabled":true
+                "url":"https://www.amazon.com/"
             }
         ]
     },
-	"videos":{
+	"Videos":{
         "tagline":"Watch cat videos:",
         "items":[
             {
                 "name":"Vimeo",
                 "icon":"fa-vimeo",
-                "url":"https://www.youtube.com/",
-				"enabled":true
+                "url":"https://www.vimeo.com/"
             },
 			{
                 "name":"YouTube",
                 "icon":"fa-youtube",
-                "url":"https://www.youtube.com/",
-				"enabled":true
+                "url":"https://www.youtube.com/"
             }
         ]
     }
