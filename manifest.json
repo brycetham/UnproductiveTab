@@ -1,7 +1,7 @@
 {
    "name":"UnproductiveTab",
    "description":"Optimized for maximum (un)productivity!",
-   "version":"0.0.2.0",
+   "version":"0.0.2.1",
    "manifest_version":2,
    "permissions":[
       "management",

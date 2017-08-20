@@ -1,7 +1,9 @@
 $(document).ready(function() {
 	getGreeting();
 	getContent();
-	initialConfiguration();
+	$("#save").click(saveSettings);
+	$("#button_Settings").click(loadSettings);
+	loadSettings();
 });
 
 function getGreeting() {
@@ -30,7 +32,7 @@ function getGreeting() {
 					"AHHH your assignment is due at 11:59!"
 					]
 	}
-	$("#greeting").html("Good " + greeting + ", <span id=\"Name\">friend</span>.");
+	$("#greeting").html("Good " + greeting + " <span id=\"Name\"></span>.");
 	$("#aside").html(comments[Math.floor(Math.random() * comments.length)]);
 }
 
@@ -42,7 +44,7 @@ function getContent() {
 			var buttons = "";
 			var checkboxes = "";
 			$.each(values["items"], function(index, item){
-				buttons += "<a href=\"" + item["url"] + "\" class=\"btn btn-outline-dark\" id=\"button_" + item["name"] + "\"><i class=\"fa " + item["icon"] + "\" aria-hidden=\"true\"></i> " + item["name"] + "</a> ";
+				buttons += "<a href=\"" + item["url"] + "\" class=\"btn btn-outline-dark\" id=\"button_" + item["name"] + "\" style=\"display:none\"><i class=\"fa " + item["icon"] + "\" aria-hidden=\"true\"></i> " + item["name"] + "</a> ";
 				checkboxes += "<div class=\"form-check form-check-inline\"><label class=\"form-check-label\"><input class=\"form-check-input\" type=\"checkbox\" id=\"checkbox_" + item["name"] + "\" checked> " + item["name"] + "</label></div>";
 			});
 			pageContent += "<div class=\"row\" id=\"section_" + category + "\"><div class=\"col\"><h6>" + values["tagline"] + "</h6>" + buttons + "</div></div>";
@@ -84,13 +86,6 @@ function storeValue(value) {
 	});
 }
 
-function loadName() {
-	chrome.storage.sync.get("Name", function(value) {
-        $("#Name").html(value["Name"]);
-		$("#input_Name")[0].value = value["Name"];
-	});
-}
-
 function loadCheckbox(name) {
 	chrome.storage.sync.get(name, function(value) {
 		$("#checkbox_" + name)[0].checked = value[name];
@@ -98,22 +93,20 @@ function loadCheckbox(name) {
 }
 
 function loadSettings() {
-	loadName();
-	$.getJSON("data.json", function(json){
-		$.each(json, function(category, values){
-			$.each(values["items"], function(index, item){
-				loadCheckbox(item["name"]);
-			});
-		});
-		saveSettings();
-	});
-}
-
-function initialConfiguration() {
-	$("#save").click(saveSettings);
 	chrome.storage.sync.get("Name", function(value) {
 		if (value["Name"] != undefined) {
-			loadSettings();
+			$("#Name").html(value["Name"]);
+			$("#input_Name")[0].value = value["Name"];
+			$.getJSON("data.json", function(json){
+				$.each(json, function(category, values){
+					$.each(values["items"], function(index, item){
+						loadCheckbox(item["name"]);
+					});
+				});
+				saveSettings();
+			});
+		} else {
+			saveSettings();
 		}
 	});
 }
