@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	getGreeting();
 	getContent();
-	$("#save").click(saveSettings);
+	initialConfiguration();
 });
 
 function getGreeting() {
@@ -30,7 +30,7 @@ function getGreeting() {
 					"AHHH your assignment is due at 11:59!"
 					]
 	}
-	$("#greeting").html("Good " + greeting + ", <span id=\"Name\">Bryce</span>.");
+	$("#greeting").html("Good " + greeting + ", <span id=\"Name\">friend</span>.");
 	$("#aside").html(comments[Math.floor(Math.random() * comments.length)]);
 }
 
@@ -53,27 +53,10 @@ function getContent() {
 	});
 }
 
-function saveData(data) {
-	chrome.storage.sync.set({"data":data}, function() {
-        console.log("Saved data.");
-	});
-}
-
-function loadData(onSuccess) {
-	chrome.storage.sync.get("data", function(data) {
-        if (Object.keys(data).length != 0) {
-			onSuccess(data)
-		} else {
-			$.getJSON("data.json", function(json){
-				onSuccess(json);
-			});
-		}
-	});
-}
-
 function saveSettings() {
 	$("#Name").html($("#input_Name")[0].value);
 	$.getJSON("data.json", function(json){
+		var settings = {"Name":$("#input_Name")[0].value};
 		$.each(json, function(category, values){
 			var visibilityFlag = false;
 			$.each(values["items"], function(index, item){
@@ -83,6 +66,7 @@ function saveSettings() {
 				} else {
 					$("#button_" + item["name"]).css('display', 'none');
 				}
+				settings[item["name"]] = $("#checkbox_" + item["name"])[0].checked;
 			});
 			if (visibilityFlag) {
 				$("#section_" + category).css('display', 'block');
@@ -90,5 +74,46 @@ function saveSettings() {
 				$("#section_" + category).css('display', 'none');
 			}
 		});
+		storeValue(settings);
+	});
+}
+
+function storeValue(value) {
+	chrome.storage.sync.set(value, function() {
+        console.log(value);
+	});
+}
+
+function loadName() {
+	chrome.storage.sync.get("Name", function(value) {
+        $("#Name").html(value["Name"]);
+		$("#input_Name")[0].value = value["Name"];
+	});
+}
+
+function loadCheckbox(name) {
+	chrome.storage.sync.get(name, function(value) {
+		$("#checkbox_" + name)[0].checked = value[name];
+	});
+}
+
+function loadSettings() {
+	loadName();
+	$.getJSON("data.json", function(json){
+		$.each(json, function(category, values){
+			$.each(values["items"], function(index, item){
+				loadCheckbox(item["name"]);
+			});
+		});
+		saveSettings();
+	});
+}
+
+function initialConfiguration() {
+	$("#save").click(saveSettings);
+	chrome.storage.sync.get("Name", function(value) {
+		if (value["Name"] != undefined) {
+			loadSettings();
+		}
 	});
 }
