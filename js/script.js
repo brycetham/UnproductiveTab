@@ -2,8 +2,7 @@ $(document).ready(function() {
 	getGreeting();
 	getContent();
 	$("#save").click(saveSettings);
-	$("#button_Settings").click(loadSettings);
-	loadSettings();
+	$("#button_Settings").click(loadModal);
 });
 
 function getGreeting() {
@@ -32,81 +31,62 @@ function getGreeting() {
 					"AHHH your assignment is due at 11:59!"
 					]
 	}
-	$("#greeting").html("Good " + greeting + " <span id=\"Name\"></span>.");
+	$("#greeting").html("Good " + greeting + ", <span id=\"Name\"></span>.");
 	$("#aside").html(comments[Math.floor(Math.random() * comments.length)]);
 }
 
 function getContent() {
-	$.getJSON("data.json", function(json){
-		var pageContent = "";
-		var modalContent = "";
-		$.each(json, function(category, values){
-			var buttons = "";
-			var checkboxes = "";
-			$.each(values["items"], function(index, item){
-				buttons += "<a href=\"" + item["url"] + "\" class=\"btn btn-outline-dark\" id=\"button_" + item["name"] + "\" style=\"display:none\"><i class=\"fa " + item["icon"] + "\" aria-hidden=\"true\"></i> " + item["name"] + "</a> ";
-				checkboxes += "<div class=\"form-check form-check-inline\"><label class=\"form-check-label\"><input class=\"form-check-input\" type=\"checkbox\" id=\"checkbox_" + item["name"] + "\" checked> " + item["name"] + "</label></div>";
+	chrome.storage.sync.get("name", function(saved) {
+		$("#Name").html(saved["name"] ? saved["name"] : "stranger");
+	});
+	chrome.storage.sync.get("items", function(saved) {
+		$.getJSON("data.json", function(data){
+			var pageContent = "";
+			$.each(data, function(category, values){
+				var buttons = "";
+				var visibility = "none";
+				$.each(values["items"], function(index, item){
+					var display = !saved["items"] || saved["items"][item["name"]] ? "inline-block" : "none";
+					buttons += "<a href=\"" + item["url"] + "\" class=\"btn btn-outline-dark\" id=\"button_" + item["name"] + "\" style=\"display:" + display + "\"><i class=\"fa " + item["icon"] + "\" aria-hidden=\"true\"></i> " + item["name"] + "</a> ";
+					visibility = !saved["items"] || saved["items"][item["name"]] ? "block" : visibility;
+				});
+				pageContent += "<div class=\"row\" id=\"section_" + category + "\" style=\"display:" + visibility + "\"><div class=\"col\"><h6>" + values["tagline"] + "</h6>" + buttons + "</div></div>";
 			});
-			pageContent += "<div class=\"row\" id=\"section_" + category + "\"><div class=\"col\"><h6>" + values["tagline"] + "</h6>" + buttons + "</div></div>";
-			modalContent += "<h6>" + category + "</h6><p><small>" + checkboxes + "</small></p>";
+			$("#pageContent").html(pageContent);
 		});
-		$("#pageContent").html(pageContent);
-		$("#modalContent").html(modalContent);
 	});
 }
 
 function saveSettings() {
-	$("#Name").html($("#input_Name")[0].value);
-	$.getJSON("data.json", function(json){
-		var settings = {"Name":$("#input_Name")[0].value};
-		$.each(json, function(category, values){
-			var visibilityFlag = false;
+	$.getJSON("data.json", function(data){
+		var settings = {"name":$("#input_Name")[0].value,"items":{}};
+		$.each(data, function(category, values){
 			$.each(values["items"], function(index, item){
-				if ($("#checkbox_" + item["name"])[0].checked) {
-					$("#button_" + item["name"]).css('display', 'inline-block');
-					visibilityFlag = true;
-				} else {
-					$("#button_" + item["name"]).css('display', 'none');
-				}
-				settings[item["name"]] = $("#checkbox_" + item["name"])[0].checked;
+				settings["items"][item["name"]] = $("#checkbox_" + item["name"])[0].checked;
 			});
-			if (visibilityFlag) {
-				$("#section_" + category).css('display', 'block');
-			} else {
-				$("#section_" + category).css('display', 'none');
-			}
 		});
-		storeValue(settings);
+		chrome.storage.sync.set(settings, function() {
+			getContent();
+		});
 	});
 }
 
-function storeValue(value) {
-	chrome.storage.sync.set(value, function() {
-        console.log(value);
+function loadModal() {
+	chrome.storage.sync.get("name", function(saved) {
+		$("#input_Name")[0].value = saved["name"] ? saved["name"] : "stranger";
 	});
-}
-
-function loadCheckbox(name) {
-	chrome.storage.sync.get(name, function(value) {
-		$("#checkbox_" + name)[0].checked = value[name];
-	});
-}
-
-function loadSettings() {
-	chrome.storage.sync.get("Name", function(value) {
-		if (value["Name"] != undefined) {
-			$("#Name").html(value["Name"]);
-			$("#input_Name")[0].value = value["Name"];
-			$.getJSON("data.json", function(json){
-				$.each(json, function(category, values){
-					$.each(values["items"], function(index, item){
-						loadCheckbox(item["name"]);
-					});
+	chrome.storage.sync.get("items", function(saved) {
+		$.getJSON("data.json", function(data){
+			var modalContent = "";
+			$.each(data, function(category, values){
+				var checkboxes = "";
+				$.each(values["items"], function(index, item){
+					var checked = !saved["items"] || saved["items"][item["name"]] ? "checked" : "";
+					checkboxes += "<div class=\"form-check form-check-inline\"><label class=\"form-check-label\"><input class=\"form-check-input\" type=\"checkbox\" id=\"checkbox_" + item["name"] + "\" " + checked + "> " + item["name"] + "</label></div>";
 				});
-				saveSettings();
+				modalContent += "<h6>" + category + "</h6><p><small>" + checkboxes + "</small></p>";
 			});
-		} else {
-			saveSettings();
-		}
+			$("#modalContent").html(modalContent);
+		});
 	});
 }
