@@ -1,8 +1,7 @@
 $(document).ready(function() {
 	getGreeting();
 	getContent();
-	$("#save").click(saveSettings);
-	$("#button_Settings").click(loadModal);
+	bindEvents();
 });
 
 function getGreeting() {
@@ -88,5 +87,15 @@ function loadModal() {
 			});
 			$("#modalContent").html(modalContent);
 		});
+	});
+}
+
+function bindEvents() {
+	$("#save").click(saveSettings);
+	$("#button_Settings").click(loadModal);
+	$("input").keypress(function(event) {
+		if (event.keyCode == 13) {
+			event.preventDefault();
+		}
 	});
 }
