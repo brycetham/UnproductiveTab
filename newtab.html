@@ -28,7 +28,7 @@
 	
 		<br /><br />
 		
-		<div id="header">
+		<div id="unproductiveHeader" style="display:none;">
 			<div class="row">
 				<div class="col">
 					<h1 id="greeting" style="font-size:5em;"></h1>
@@ -37,12 +37,28 @@
 			</div>
 		</div>
 		
+		<div id="productiveHeader" style="color:white;display:none;">
+			<div class="row">
+				<div class="col">
+					<h1 style="font-size:10em;">STOP!</h1>
+					<h1>You're supposed to be productive right now.</h1>
+					<p style="color:lightgray;">(Now be a good person and get off the Internet.)</p>
+				</div>
+			</div>
+		</div>
+		
 		<div id="pageContent"></div>
 		
-		<div id="footer" style="position:absolute; bottom:10px; right:10px;">
-			<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#settings" id="button_Settings">
-				<i class="fa fa-cog" aria-hidden="true"></i> Settings
-			</button>
+		<div id="footer" style="position:absolute;bottom:10px;right:10px;">
+			<small>
+				<label class="form-check-label">
+					<input class="form-check-input" type="checkbox" id="checkbox_Productivity" /> Enable Productivity
+				</label>
+				&nbsp&nbsp&nbsp
+				<button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#settings" id="button_Settings">
+					<i class="fa fa-cog" aria-hidden="true"></i> Settings
+				</button>
+			</small>
 		</div>
 		
 		<div class="modal fade" id="settings" tabindex="-1" role="dialog">

@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	getGreeting();
 	getContent();
+	loadModal();
 	bindEvents();
 });
 
@@ -38,6 +39,10 @@ function getContent() {
 	chrome.storage.sync.get("name", function(saved) {
 		$("#Name").html(saved["name"] ? saved["name"] : "stranger");
 	});
+	chrome.storage.sync.get("productivity", function(saved) {
+		$("#checkbox_Productivity")[0].checked = saved["productivity"] ? saved["productivity"] : false;
+		toggleProductivity();
+	});
 	chrome.storage.sync.get("items", function(saved) {
 		$.getJSON("data.json", function(data){
 			var pageContent = "";
@@ -58,9 +63,13 @@ function getContent() {
 
 function saveSettings() {
 	$.getJSON("data.json", function(data){
-		var settings = {"name":$("#input_Name")[0].value,"items":{}};
+		var settings = {};
+		settings["name"] = $("#input_Name")[0].value;
+		settings["productivity"] = $("#checkbox_Productivity")[0].checked;
+		settings["items"] = {};
 		$.each(data, function(category, values){
 			$.each(values["items"], function(index, item){
+				console.log("#checkbox_" + item["name"]);
 				settings["items"][item["name"]] = $("#checkbox_" + item["name"])[0].checked;
 			});
 		});
@@ -68,6 +77,7 @@ function saveSettings() {
 			getContent();
 		});
 	});
+	console.log("settings saved");
 }
 
 function loadModal() {
@@ -90,9 +100,29 @@ function loadModal() {
 	});
 }
 
+function toggleProductivity() {
+	if ($("#checkbox_Productivity")[0].checked) {
+		$("body").css("backgroundColor", "dimgray");
+		$("#unproductiveHeader").css("display", "none");
+		$("#pageContent").css("display", "none");
+		$("#productiveHeader").css("display", "block");
+		$("#button_Settings").prop("disabled", true);
+		$("#button_Settings").html("<i class=\"fa fa-ban\" aria-hidden=\"true\"></i> Settings");
+	} else {
+		$("body").css("backgroundColor", "whitesmoke");
+		$("#unproductiveHeader").css("display", "block");
+		$("#pageContent").css("display", "block");
+		$("#productiveHeader").css("display", "none");
+		$("#button_Settings").prop("disabled", false);
+		$("#button_Settings").html("<i class=\"fa fa-cog\" aria-hidden=\"true\"></i> Settings");
+	}
+}
+
 function bindEvents() {
 	$("#save").click(saveSettings);
 	$("#button_Settings").click(loadModal);
+	$("#checkbox_Productivity").change(toggleProductivity);
+	$("#checkbox_Productivity").change(saveSettings);
 	$("input").keypress(function(event) {
 		if (event.keyCode == 13) {
 			event.preventDefault();
