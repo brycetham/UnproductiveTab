@@ -17,7 +17,28 @@
 		background-color: whitesmoke;
 	}
 	.row {
-		padding: 2%;
+		padding: 1.5%;
+	}
+	#productive-header {
+		color: white;
+		display: none;
+	}
+	#stop {
+		font-size: 10em;
+	}
+	#unproductive-header {
+		display: none;
+	}
+	#greeting {
+		font-size: 5em;
+	}
+	#aside {
+		font-size: 1em;
+	}
+	#footer {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
 	}
 	</style>
 	
@@ -28,34 +49,34 @@
 	
 		<br /><br />
 		
-		<div id="unproductiveHeader" style="display:none;">
+		<div id="productive-header">
 			<div class="row">
 				<div class="col">
-					<h1 id="greeting" style="font-size:5em;"></h1>
-					<h6 id="aside" class="text-muted" style="font-size:1em;"></h6>
-				</div>
-			</div>
-		</div>
-		
-		<div id="productiveHeader" style="color:white;display:none;">
-			<div class="row">
-				<div class="col">
-					<h1 style="font-size:10em;">STOP!</h1>
+					<h1 id="stop">STOP!</h1>
 					<h1>You're supposed to be productive right now.</h1>
 					<p style="color:lightgray;">(Now be a good person and get off the Internet.)</p>
 				</div>
 			</div>
 		</div>
 		
-		<div id="pageContent"></div>
+		<div id="unproductive-header">
+			<div class="row">
+				<div class="col">
+					<h1 id="greeting"></h1>
+					<h6 id="aside" class="text-muted"></h6>
+				</div>
+			</div>
+		</div>
 		
-		<div id="footer" style="position:absolute;bottom:10px;right:10px;">
+		<div id="page-contents"></div>
+		
+		<div id="footer">
 			<small>
 				<label class="form-check-label">
-					<input class="form-check-input" type="checkbox" id="checkbox_Productivity" /> Enable Productivity
+					<input class="form-check-input" type="checkbox" id="checkbox-productivity" /> Enable Productivity
 				</label>
 				&nbsp&nbsp&nbsp
-				<button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#settings" id="button_Settings">
+				<button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#settings" id="button-settings">
 					<i class="fa fa-cog" aria-hidden="true"></i> Settings
 				</button>
 			</small>
@@ -70,10 +91,10 @@
 					<div class="modal-body">
 					<form>
 						<p class="lead">Name</p>
-						<input type="text" class="form-control" id="input_Name" value="stranger">
+						<input type="text" class="form-control" id="input-name" value="stranger">
 						<hr />
 						<p class="lead">Buttons</p>
-						<span id="modalContent"></span>
+						<span id="modal-contents"></span>
 					</form>
 					</div>
 					<div class="modal-footer">
@@ -87,6 +108,7 @@
 	</div>
 		
     <script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 	<script src="js/script.js"></script>

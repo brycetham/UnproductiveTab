@@ -1,50 +1,145 @@
 {
-    "Productivity":{
+    "social":{
         "tagline":"Be unproductive:",
         "items":[
             {
                 "name":"Facebook",
-                "icon":"fa-facebook",
+                "id":"facebook",
                 "url":"https://www.facebook.com/"
             },
-            {
-                "name":"Instagram",
-                "icon":"fa-instagram",
-                "url":"https://www.instagram.com/"
+			{
+                "name":"Google+",
+                "id":"google-plus",
+                "url":"https://plus.google.com/"
             },
             {
                 "name":"Reddit",
-                "icon":"fa-reddit",
+                "id":"reddit",
                 "url":"https://www.reddit.com/"
+            },
+			{
+                "name":"Tumblr",
+                "id":"tumblr",
+                "url":"https://www.tumblr.com/"
             },
             {
                 "name":"Twitter",
-                "icon":"fa-twitter",
+                "id":"twitter",
                 "url":"https://www.twitter.com/"
             }
         ]
     },
-	"Shopping":{
-        "tagline":"Buy needless things:",
+	"shopping":{
+		"tagline":"Buy needless things:",
+		"items":[
+			{
+				"name":"Amazon",
+				"id":"amazon",
+				"url":"https://www.amazon.com/"
+			},
+			{
+			"name":"Etsy",
+			"id":"etsy",
+			"url":"https://www.etsy.com/"
+			},
+			{
+				"name":"Steam",
+				"id":"steam",
+				"url":"http://store.steampowered.com/"
+			}
+		]
+	},
+	"photography":{
+        "tagline":"Find pretty stuff:",
+        "items":[
+			{
+                "name":"DeviantArt",
+                "id":"deviantart",
+                "url":"https://www.deviantart.com/"
+            },
+			{
+                "name":"Flickr",
+                "id":"flickr",
+                "url":"https://www.flickr.com/"
+            },
+            {
+                "name":"Instagram",
+                "id":"instagram",
+                "url":"https://www.instagram.com/"
+            },
+			{
+                "name":"Pinterest",
+                "id":"pinterest",
+                "url":"https://www.pinterest.com/"
+            }
+		]
+    },
+	"music":{
+        "tagline":"Listen to sick beats:",
         "items":[
             {
-                "name":"Amazon",
-                "icon":"fa-amazon",
-                "url":"https://www.amazon.com/"
+                "name":"Bandcamp",
+                "id":"bandcamp",
+                "url":"https://www.bandcamp.com/"
+            },
+			{
+                "name":"SoundCloud",
+                "id":"soundcloud",
+                "url":"https://www.soundcloud.com/"
+            },
+			{
+                "name":"Spotify",
+                "id":"spotify",
+                "url":"https://play.spotify.com/"
             }
         ]
     },
-	"Videos":{
-        "tagline":"Watch cat videos:",
+	"coding":{
+        "tagline":"Make something useful:",
         "items":[
             {
+                "name":"GitHub",
+                "id":"github",
+                "url":"https://www.github.com/"
+            },
+			{
+                "name":"JSFiddle",
+                "id":"jsfiddle",
+                "url":"https://www.jsfiddle.net/"
+            },
+			{
+                "name":"Slack",
+                "id":"slack",
+                "url":"https://www.slack.com/"
+            },
+			{
+                "name":"Stack Overflow",
+                "id":"stack-overflow",
+                "url":"https://www.stackoverflow.com/"
+            },
+			{
+                "name":"Trello",
+                "id":"trello",
+                "url":"https://www.trello.com/"
+            }
+        ]
+    },
+	"videos":{
+        "tagline":"Watch cat videos:",
+        "items":[
+			{
+                "name":"Twitch",
+                "id":"twitch",
+                "url":"https://www.twitch.tv/"
+            },
+            {
                 "name":"Vimeo",
-                "icon":"fa-vimeo",
+                "id":"vimeo",
                 "url":"https://www.vimeo.com/"
             },
 			{
                 "name":"YouTube",
-                "icon":"fa-youtube",
+                "id":"youtube",
                 "url":"https://www.youtube.com/"
             }
         ]
